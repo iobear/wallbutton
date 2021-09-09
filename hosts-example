@@ -1,0 +1,8 @@
+[all:vars]
+ansible_connection=ssh
+ansible_become=yes
+ansible_python_interpreter=/usr/bin/python3
+ansible_user=pi
+
+[wallbutton]
+10.11.12.13

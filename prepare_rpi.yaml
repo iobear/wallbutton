@@ -1,0 +1,71 @@
+- hosts: all
+  tasks:
+  - name: Copy syslog logrotate
+    copy:
+      src: rpi/debian-logrotate-rsyslog
+      dest: /etc/logrotate.d/logrotate-rsyslog
+      owner: root
+      group: root
+      mode: '0644'
+  - name: remove wpasupplicant
+    package:
+      name: wpasupplicant
+      state: absent
+  - name: remove bluez
+    package:
+      name: bluez
+      state: absent
+  - name: Install unattended-upgrades
+    package:
+      name: unattended-upgrades
+      state: present
+  - name: Install python3
+    package:
+      name: python3
+      state: present
+  - name: Install python3-pip
+    package:
+      name: python3-pip
+      state: present
+  - name: Install vim
+    package:
+      name: vim
+      state: present
+  - name: Copy vimrc.local
+    template:
+      src: rpi/vimrc.local
+      dest: /etc/vim/vimrc.local
+      owner: root
+      group: root
+      mode: '0644'
+  - name: Copy 50unattended-upgrades
+    copy:
+      src: rpi/debian-50unattended-upgrades
+      dest: /etc/apt/apt.conf.d/50unattended-upgrades
+      owner: root
+      group: root
+      mode: '0644'
+  - name: Copy 20auto-upgrades
+    copy:
+      src: rpi/debian-20auto-upgrades
+      dest: /etc/apt/apt.conf.d/debian-20auto-upgrades
+      owner: root
+      group: root
+      mode: '0644'
+  - name: Copy 20auto-upgrades
+    copy:
+      src: rpi/blacklist.conf
+      dest: /etc/modprobe.d/blacklist.conf
+      owner: root
+      group: root
+      mode: '0644'
+  - name: enable unattended-upgrades.service
+    systemd:
+      name: unattended-upgrades
+      state: restarted
+      enabled: yes
+  - name: disable rsyslog
+    systemd:
+      name: rsyslog.service
+      state: stopped
+      enabled: no
