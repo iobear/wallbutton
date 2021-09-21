@@ -2,14 +2,15 @@
 
 import hue
 import denon
+import config
 
 import RPi.GPIO as GPIO  
 import time
 
-button1 = 22
-button2 = 17
-button3 = 24
-button4 = 18
+button1 = config.rpi_button1
+button2 = config.rpi_button2
+button3 = config.rpi_button3
+button4 = config.rpi_button4
 
 GPIO.setmode(GPIO.BCM)  # set up BCM GPIO numbering  
 
