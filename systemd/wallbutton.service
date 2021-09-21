@@ -1,0 +1,19 @@
+[Unit]
+Description=Wallbutton service
+Documentation=https://github.com/iobear/wallbutton
+
+Wants=network.target
+After=network-online.target
+
+[Service]
+Type=simple
+User=wallbutton
+Group=wallbutton
+WorkingDirectory=/home/wallbutton
+ExecStart=/home/wallbutton/bin/gipo_button.py
+Restart=on-failure
+RestartSec=3
+KillMode=process
+
+[Install]
+WantedBy=multi-user.target
