@@ -42,34 +42,6 @@
       extra_args: --user
       state: present
       executable: pip3
-  - name: Install unattended-upgrades
-    package:
-      name: unattended-upgrades
-      state: present
-  - name: Copy 20auto-upgrades
-    copy:
-      src: rpi/debian-20auto-upgrades
-      dest: /etc/apt/apt.conf.d/debian-20auto-upgrades
-      owner: root
-      group: root
-      mode: '0644'
-  - name: Copy modprobe.d/blacklist.conf
-    copy:
-      src: rpi/blacklist.conf
-      dest: /etc/modprobe.d/blacklist.conf
-      owner: root
-      group: root
-      mode: '0644'
-  - name: enable unattended-upgrades.service
-    systemd:
-      name: unattended-upgrades
-      state: restarted
-      enabled: yes
-  - name: disable rsyslog
-    systemd:
-      name: rsyslog.service
-      state: stopped
-      enabled: no
   - name: enable wallbutton.service
     systemd:
       name: wallbutton.service

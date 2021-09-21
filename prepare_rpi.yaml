@@ -52,7 +52,7 @@
       owner: root
       group: root
       mode: '0644'
-  - name: Copy 20auto-upgrades
+  - name: Copy modprobe.d/blacklist.conf
     copy:
       src: rpi/blacklist.conf
       dest: /etc/modprobe.d/blacklist.conf
