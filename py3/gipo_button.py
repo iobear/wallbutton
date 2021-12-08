@@ -49,7 +49,7 @@ def checkRules():
         if lightstrip_state != "":
             hue.turn("Hue lightstrip", lightstrip_state)
 
-    if button_state["button2"] == 1: #toggle ON+Radio / CD / OFF
+    if button_state["button2"] == 1: #toggle ON / Radio / CD / OFF
         if denon.state["on"] == 0:
             denon.power('on')
             denon.setVolume(denon.volume_start)
@@ -66,8 +66,6 @@ def checkRules():
     if button_state["button4"] == 1: #Volume UP
         if denon.state["on"] == 1:
             denon.volume('up')
-#    denon.input_select('iradio')
-#    print('P6 radio')
         
 
 def change_state(button, state):
@@ -76,7 +74,12 @@ def change_state(button, state):
         checkRules()
 
 
+hue.verifyState()
+count = 0
+
 while True:
+    count = count + 1
+
     if GPIO.input(button1):
         change_state("button1", 1)
 
@@ -109,3 +112,7 @@ while True:
         if not GPIO.input(button4):
             change_state("button4", 0)
             #print("Button4 OFF")
+
+    if count == config.hue_verify_state * 10:
+        hue.verifyState()
+        count = 0
