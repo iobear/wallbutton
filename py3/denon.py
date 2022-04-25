@@ -3,6 +3,7 @@
 import requests
 import sys
 import config
+import re
 
 volume_step = config.denon_volume_step
 volume_start = config.denon_volume_start
@@ -30,7 +31,7 @@ def apiTalk(host, zone, postdata):
 	uri = '/' + zone + '/index.put.asp'
 	url = host + uri
 
-	r = requests.post(url, data = postdata)
+	r = requests.post(url, data = postdata, timeout=8)
 
 
 def power(on_off):
@@ -69,7 +70,43 @@ def setVolume(value):
 	state["volume"] = value
 
 
+def checkState():
+	#curl http://<host>/top.asp | grep Power_Off_dat
+	#http://192.168.4.201/goform/formMainZone_MainZoneXml.xml
+
+	url = amp['host'] + '/goform/formMainZone_MainZoneXml.xml'
+	r = requests.get(url, timeout=10)
+
+	if r.status_code == 200:
+		if re.search('STANDBY', r.text):
+			state["on"] = 0
+		else:
+			state["on"] = 1
+		if re.search('CD', r.text):
+			state["cd"] = 1
+			state["iradio"] = 0
+		if re.search('IRADIO', r.text):
+			state["cd"] = 0
+			state["iradio"] = 1
+		for line in r.iter_lines():
+			linecl = line.decode('UTF-8')
+			if re.search('MasterVolume', linecl):
+				vol = int(linecl[21:24].split('.')[0]) + 80
+				state["volume"] = vol
+
+	else:
+		state["on"] = 0
+
+	if sys.argv[1] == 'status':
+		print('POWER: ' + str(state["on"]))
+		print('CD: ' + str(state["cd"]))
+		print('iRadio: ' + str(state["iradio"]))
+		print('Volume: ' + str(state["volume"]))
+
+
 if __name__ == "__main__":
+	if sys.argv[1] == 'status':
+		checkState()
 	if sys.argv[1] == 'on':
 		power('on')
 	if sys.argv[1] == 'off':

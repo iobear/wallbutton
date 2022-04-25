@@ -42,7 +42,7 @@
       extra_args: --user
       state: present
       executable: pip3
-  - name: enable wallbutton.service
+  - name: restart/enable wallbutton.service
     systemd:
       name: wallbutton.service
       state: restarted

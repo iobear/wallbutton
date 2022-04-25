@@ -75,6 +75,7 @@ def change_state(button, state):
 
 
 hue.verifyState()
+denon.checkState()
 count = 0
 
 while True:
@@ -115,4 +116,5 @@ while True:
 
     if count == config.hue_verify_state * 10:
         hue.verifyState()
+        denon.checkState()
         count = 0
