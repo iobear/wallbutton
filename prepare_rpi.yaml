@@ -11,6 +11,10 @@
     package:
       name: wpasupplicant
       state: absent
+  - name: remove ntfs-3g
+    package:
+      name: ntfs-3g
+      state: absent
   - name: remove bluez
     package:
       name: bluez
@@ -18,7 +22,7 @@
   - name: Install unattended-upgrades
     package:
       name: unattended-upgrades
-      state: present
+      state: absent
   - name: Install python3
     package:
       name: python3
@@ -62,8 +66,8 @@
   - name: enable unattended-upgrades.service
     systemd:
       name: unattended-upgrades
-      state: restarted
-      enabled: yes
+      state: stopped
+      enabled: no
   - name: disable rsyslog
     systemd:
       name: rsyslog.service
