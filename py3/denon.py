@@ -8,6 +8,7 @@ import re
 volume_step = config.denon_volume_step
 volume_start = config.denon_volume_start
 volume_diff = -80
+printstatus = 0
 
 amp = {
 	"host":"http://" + config.denon_amp,
@@ -97,7 +98,7 @@ def checkState():
 	else:
 		state["on"] = 0
 
-	if sys.argv[1] == 'status':
+	if printstatus == 1:
 		print('POWER: ' + str(state["on"]))
 		print('CD: ' + str(state["cd"]))
 		print('iRadio: ' + str(state["iradio"]))
@@ -106,6 +107,7 @@ def checkState():
 
 if __name__ == "__main__":
 	if sys.argv[1] == 'status':
+		printstatus = 1
 		checkState()
 	if sys.argv[1] == 'on':
 		power('on')
